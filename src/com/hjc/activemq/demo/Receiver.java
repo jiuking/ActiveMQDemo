@@ -34,11 +34,11 @@ public class Receiver {
             // 获取操作连接
             session = connection.createSession(Boolean.FALSE,
                     Session.AUTO_ACKNOWLEDGE);
-            // 获取session注意参数值xingbo.xu-queue是一个服务器的queue，须在在ActiveMq的console配置
+            // 获取session注意参数值FirstQueue是一个服务器的queue，须在在ActiveMq的console配置
             destination = session.createQueue("FirstQueue");
             consumer = session.createConsumer(destination);
             while (true) {
-                //设置接收者接收消息的时间，为了便于测试，这里谁定为100s
+                //设置接收者接收消息的时间，为了便于测试，这里定为100s
                 TextMessage message = (TextMessage) consumer.receive(100000);
                 if (null != message) {
                     System.out.println("收到消息" + message.getText());
