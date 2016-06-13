@@ -1,7 +1,5 @@
 package com.hjc.activemq.demo;
 
-import java.awt.font.TextMeasurer;
-
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.DeliveryMode;
@@ -18,19 +16,32 @@ public class Sender {
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		
+		//连接工厂，JMS用它创建连接
 		ConnectionFactory connectionFactory;
+		//JMS客户端到JMS Provider的连接
 		Connection connection = null;
+		//一个发送或接收消息的线程
 		Session session;
+		//消息的目的地；消息发送给谁
 		Destination destination;
+//		消息发送者
 		MessageProducer producer;
+//		构造ConnectionFactory实例对象
 		connectionFactory = new ActiveMQConnectionFactory(ActiveMQConnection.DEFAULT_USER, 
 				ActiveMQConnection.DEFAULT_PASSWORD, "tcp://localhost:61616");
 		try{
+//			构造从工厂得到连接对象
 			connection  = connectionFactory.createConnection();
+//			启动
 			connection.start();
+//			获取操作连接
 			session = connection.createSession(Boolean.TRUE, Session.AUTO_ACKNOWLEDGE);
+//			获取session注意参数值FirstQueue是一个服务器的queue，需在ActiveMq的console配置
 			destination = session.createQueue("FirstQueue");
+//			得到消息生成者【发送者】
 			producer = session.createProducer(destination);
+//			设置不持久化，实际根据项目决定
 			producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 			sendMessage(session,producer);
 			session.commit();
